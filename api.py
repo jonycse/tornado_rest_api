@@ -61,9 +61,10 @@ class BooksHandler(BaseHandler):
             title = self.get_argument("title")
             author = self.get_argument("author")
             if not name or not title or not author:
-                self.write({"success":False})
+                return self.write({"success":False})
             if not len(name) or not len(title) or not len(author):
-                self.write({"success":False})
+                return self.write({"success":False})
+                
             print "[ NEW BOOK ] name ",name," title ",title," author ",author
             self.db.execute(
                 "INSERT INTO book (name,title,author) VALUES (%s,%s,%s)",name, title,author)
@@ -83,9 +84,11 @@ class CategoryHandler(BaseHandler):
     def post(self):
         try:
             print "Adding new category"
-            name = self.get_argument("name")
+            name = self.get_argument("name", None)
+            print name
             if not name or not len(name):
-                self.write({"success":False})
+                return self.write({"success":False})
+                
             print "[ NEW CATEGORY ] name ",name
             self.db.execute(
                 "INSERT INTO category (name) VALUES (%s)",name)
