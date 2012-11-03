@@ -54,6 +54,15 @@ class BooksHandler(BaseHandler):
             result["book"].append({"id":entrie.id, "name":entrie.name, "title":entrie.title, "author":entrie.author})
         self.write(result)
 
+    def post(self):
+        print "Adding new book"
+        name = self.get_argument("name")
+        title = self.get_argument("title")
+        author = self.get_argument("author")
+        print "[ NEW BOOK ] name ",name," title ",title," author ",author
+        self.db.execute(
+            "INSERT INTO book (name,title,author) VALUES (%s,%s,%s)",name, title,author)
+        self.write({"success":True})
 
 class CategoryHandler(BaseHandler):
     def get(self):
@@ -63,6 +72,14 @@ class CategoryHandler(BaseHandler):
         for entrie in entries:
             result["category"].append({"id":entrie.id, "name":entrie.name})
         self.write(result)
+        
+    def post(self):
+        print "Adding new category"
+        name = self.get_argument("name")
+        print "[ NEW CATEGORY ] name ",name
+        self.db.execute(
+            "INSERT INTO category (name) VALUES (%s)",name)
+        self.write({"success":True})
 
 
 class AllHandler(BaseHandler):
