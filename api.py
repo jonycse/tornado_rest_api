@@ -55,14 +55,21 @@ class BooksHandler(BaseHandler):
         self.write(result)
 
     def post(self):
-        print "Adding new book"
-        name = self.get_argument("name")
-        title = self.get_argument("title")
-        author = self.get_argument("author")
-        print "[ NEW BOOK ] name ",name," title ",title," author ",author
-        self.db.execute(
-            "INSERT INTO book (name,title,author) VALUES (%s,%s,%s)",name, title,author)
-        self.write({"success":True})
+        try:
+            print "Adding new book"
+            name = self.get_argument("name")
+            title = self.get_argument("title")
+            author = self.get_argument("author")
+            if not name or not title or not author:
+                self.write({"success":False})
+            if not len(name) or not len(title) or not len(author):
+                self.write({"success":False})
+            print "[ NEW BOOK ] name ",name," title ",title," author ",author
+            self.db.execute(
+                "INSERT INTO book (name,title,author) VALUES (%s,%s,%s)",name, title,author)
+            self.write({"success":True})
+        except:
+            self.write({"success":False})
 
 class CategoryHandler(BaseHandler):
     def get(self):
@@ -74,12 +81,17 @@ class CategoryHandler(BaseHandler):
         self.write(result)
         
     def post(self):
-        print "Adding new category"
-        name = self.get_argument("name")
-        print "[ NEW CATEGORY ] name ",name
-        self.db.execute(
-            "INSERT INTO category (name) VALUES (%s)",name)
-        self.write({"success":True})
+        try:
+            print "Adding new category"
+            name = self.get_argument("name")
+            if not name or not len(name):
+                self.write({"success":False})
+            print "[ NEW CATEGORY ] name ",name
+            self.db.execute(
+                "INSERT INTO category (name) VALUES (%s)",name)
+            self.write({"success":True})
+        except:
+            self.write({"success":False})
 
 
 class AllHandler(BaseHandler):
