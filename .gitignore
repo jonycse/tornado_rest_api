@@ -1,4 +1,5 @@
 tornado
+.idea
 *.txt
 *.exe
 *.pyc
